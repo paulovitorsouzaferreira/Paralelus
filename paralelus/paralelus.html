@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criador de Ficha de Personagem</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: black; /* Alterado para preto */
+      color: white; /* Alterado para branco */
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 10px; /* Adicionado margem inferior */
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Estilo específico para o botão "Info" */
+    .info-button {
+      background-color: #333; /* Alterado a cor de fundo */
+    }
+
+    /* Estilo específico para o botão "Info" quando hover */
+    .info-button:hover {
+      background-color: #555; /* Alterado a cor de fundo quando hover */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Criador de Ficha de Personagem</h1>
+    <form id="character-form">
+      <label for="name">Nome:</label>
+      <input type="text" id="name" required>
+
+      <label for="level">Nível:</label>
+<select id="level" required>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+  <option value="11">11</option>
+  <option value="12">12</option>
+  <option value="13">13</option>
+  <option value="14">14</option>
+  <option value="15">15</option>
+  <option value="16">16</option>
+  <option value="17">17</option>
+  <option value="18">18</option>
+  <option value="19">19</option>
+  <option value="20">20</option>
+
+  
+</select>
+      
+      <label for="race">Raça:</label>
+      <select id="race" required>
+        <option value="Abutre">Abutre</option>
+        <option value="Arraias">Arraias</option>
+        <option value="Edáficos">Edáficos</option>
+        <option value="Nannos">Nannos</option>
+        <option value="Raikiris">Raikiris</option>
+        <option value="Humanos">Humanos</option>
+        <option value="Androides">Androides</option>
+        <option value="Nômades">Nômades</option>
+        <option value="Haku">Haku</option>
+        <option value="Illumians">Illumians</option>
+        <!-- Outras opções de Raça -->
+      </select>
+      <!-- Botão "Info" para a Raça -->
+      <button type="button" class="info-button" id="info-race">Info</button>
+
+      <label for="class">Caminho:</label>
+      <select id="class" required>
+        <option value="Bélico">Bélico</option>
+        <option value="Tecnologo">Tecnólogo</option>
+        <option value="Habilidista">Habilidista</option>
+        <option value="Ethérnauta">Ethérnauta</option>
+        <!-- Outras opções de Caminho -->
+      </select>
+      <!-- Botão "Info" para o Caminho -->
+      <button type="button" class="info-button" id="info-class">Info</button>
+
+      <!-- Campo para escolha de Arquétipo -->
+      <div id="archetype-container" style="display: none;">
+        <label for="archetype">Arquétipo:</label>
+        <select id="archetype">
+          <!-- Opções de arquétipo serão preenchidas dinamicamente -->
+        </select>
+      </div>
+
+      <!-- Adicione mais campos para outros atributos, poderes, etc. -->
+
+      <button type="submit">Criar Ficha</button>
+    </form>
+  </div>
+
+  <script>
+     const archetypesByClass = {
+      "Bélico": ["Carregado até os dentes", "Artista Marcial", "Combeiro","Mestre de Armas","Minha arma favorita","Ordinário","Guerreiro remoto","Imbatível","Bala de canhão","Vem x1","Por você","Chamar pra chincha","Duro como pedra","Veemência","Espadachim","Atirador","Supressão forçada","Franco Atirador","Tiro de sorte","Assassino","Atacar e derrubar","Vingador","Forçar Cicatrizes","Defesa Adaptável ","Invencível","Rocky"],
+      "Tecnologo": ["Armadilheiro", "Médico de combate", "Sorte Planejada ","Versátil","Mestre mecânico","Engenho","Gambiarra ","Ferreiro","Armeiro","Engenheiro ","Biólogo","Químico","Físico","Hacker","Batedor de carteiras","Legista  ","Sherlock","Escapista","Terapeuta","Lábia","Dê um trocado pro seu bruxo","Espionagem","Fantasma","Sombra ","Sentido Tático","Tente de novo","Perito em Explosivos","Rico!","Kaboom",],
+      "Habilidista": ["Calculista ", "Ciclo de uso", "Concentração Inquebrável","Célere","Discórdia ","Exímio","Franco Habilidista","Frenesi","Harmonia","Habilidista de Combate","Conduíte","Camaleão","Surpresa!","Arquiteto","Vicio","Essencialista","Flagelador","Perito Habilidista","Super!","Cinesista","Transmutador","Elementalista","Guerreiro mental",],
+      "Ethérnauta": ["Decifrador ", "Invasor", "Cyberbot","Negar Acesso","V.P.N","Trojan","Replicador","Fritar","Virus","Forçar erro","Macaco roxo","Contingência","Fragilizar","Exploit","Contágio","Visão Pentadimensional","Chocante","Enfraquecer","WhiteWorm","BlackWorm","Athena","S.M.T","Causar DDNT","Firewall","Restrição","Renovação","BlackDream","Atualizar","Retenção","X0R","Dexter","Dexter","Hack rápido",]
+      // Adicione mais arquétipos conforme necessário
+    };
+
+    // Função para preencher as opções de arquétipo com base na classe selecionada
+    function populateArchetypes(classSelected) {
+      const archetypeSelect = document.getElementById('archetype');
+      archetypeSelect.innerHTML = ''; // Limpa as opções existentes
+
+      const archetypes = archetypesByClass[classSelected];
+      archetypes.forEach(function(archetype) {
+        const option = document.createElement('option');
+        option.text = archetype;
+        option.value = archetype;
+        archetypeSelect.add(option);
+      });
+    }
+
+    // Evento para atualizar os arquétipos quando a classe é selecionada
+    document.getElementById('class').addEventListener('change', function() {
+      const classSelected = this.value;
+      if (classSelected !== '') {
+        populateArchetypes(classSelected);
+        document.getElementById('archetype-container').style.display = 'block';
+      } else {
+        document.getElementById('archetype-container').style.display = 'none';
+      }
+    });
+
+    // Evento de envio do formulário
+    document.getElementById('character-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Evita o envio do formulário
+    
+      // Obter os valores do formulário
+      var name = document.getElementById('name').value;
+      var race = document.getElementById('race').value;
+      var characterClass = document.getElementById('class').value;
+      var archetype = document.getElementById('archetype').value;
+    
+      // Você pode adicionar lógica aqui para lidar com outros campos do formulário como atributos, poderes, etc.
+    
+      // Exibir informações do personagem (para fins de demonstração)
+      alert('Nome: ' + name + '\nRaça: ' + race + '\nCaminho: ' + characterClass + '\nArquétipo: ' + archetype);
+    });
+    
+
+    // Função para redirecionar para a página de informações da Raça ao clicar no botão
+    document.getElementById('info-race').addEventListener('click', function() {
+      var selectedRace = document.getElementById('race').value;
+      window.open(selectedRace.toLowerCase() + '.html?race=' + encodeURIComponent(selectedRace), '_blank');
+    });
+
+    document.getElementById('info-class').addEventListener('click', function() {
+      var selectedClass = document.getElementById('class').value;
+      switch (selectedClass) {
+        case "Bélico":
+      window.open('Belico.html?class=' + encodeURIComponent(selectedClass), '_blank');
+          break;
+        case "Tecnologo":
+        window.open('Tecnólogo.html?class=' + encodeURIComponent(selectedClass), '_blank');
+          break;
+          case "Habilidista":
+        window.open('Habilidista.html?class=' + encodeURIComponent(selectedClass), '_blank');
+          break;
+      }
+    });
+  </script>
+</body>
+</html>
